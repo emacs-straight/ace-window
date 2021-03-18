@@ -1,15 +1,15 @@
 emacs ?= emacs
-CASK = ~/.cask/bin/cask
 
-.PHONY: all clean
+update:
+	$(emacs) -batch -l test/make-update.el
 
-all: compile
+compile: clean
+	$(emacs) -batch -l test/elpa.el -l test/make-compile.el
 
-cask:
-	$(shell EMACS=$(emacs) $(CASK) --verbose --debug)
-
-compile:
-	$(CASK) exec $(emacs) -batch --eval "(byte-compile-file \"ace-window.el\")"
+plain:
+	$(emacs) -Q -l test/elpa.el -l test/make-plain
 
 clean:
 	rm -f *.elc
+
+.PHONY: update compile clean
